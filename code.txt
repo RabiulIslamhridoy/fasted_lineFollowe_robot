@@ -1,0 +1,85 @@
+
+#include <AFMotor.h>
+
+//defining pins and variables
+#define sen1 A0
+#define sen2 A1
+#define sen3 A2
+#define sen4 A3
+#define sen5 A4
+#define sen6 A5
+
+
+AF_DCMotor motor1(4, MOTOR12_8KHZ);
+AF_DCMotor motor2(3, MOTOR12_8KHZ);
+
+
+void setup() {
+  motor1.setSpeed(62);
+  motor2.setSpeed(62);
+  pinMode(sen1, INPUT);
+  pinMode(sen2, INPUT);
+  pinMode(sen3, INPUT);
+  pinMode(sen4, INPUT);
+  pinMode(sen5, INPUT);
+  pinMode(sen6, INPUT); 
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  
+if(analogRead(sen1)<=600 && analogRead(sen3)<=600){
+forwordM();
+}
+
+else if(analogRead(sen1)<=600 && !analogRead(sen3)<=600){
+
+rightM();
+}
+else if(!analogRead(sen1)<=600 && analogRead(sen3)<=600){
+
+leftM();
+}
+ 
+else if(!analogRead(sen1)<=600 && !analogRead(sen2)<=600 && !analogRead(sen3)<=600 && analogRead(sen4)<=600) {
+forwordM();
+
+}
+
+
+else if(!analogRead(sen1)<=600 && analogRead(sen2)<=600 && !analogRead(sen3)<=600 && analogRead(sen6)<=600){
+  motor1.run(FORWARD);
+  motor2.run(RELEASE); 
+}
+else if(!analogRead(sen4)<=600 && !analogRead(sen6)<=600){
+  stopM();
+} 
+
+
+
+
+
+
+
+}
+void leftM() {
+
+  motor1.run(BACKWARD);
+  motor2.run(FORWARD);
+}
+
+void rightM() {
+  motor1.run(FORWARD);
+  motor2.run(BACKWARD);
+}
+void forwordM() {
+
+  motor1.run(FORWARD);
+  motor2.run(FORWARD);
+}
+
+void stopM() {
+  motor1.run(RELEASE);
+  motor2.run(RELEASE);
+}
